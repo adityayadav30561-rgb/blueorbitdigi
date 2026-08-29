@@ -1,0 +1,17 @@
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Node (not used today, but serve.js is node - keep it clean if that changes)
+node_modules/
+npm-debug.log*
+
+# Local env
+.env
+.env.local
