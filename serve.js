@@ -6,7 +6,9 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 
-const ROOT = path.join(__dirname, "site");
+// The site files sit at the repo root so that Vercel, GitHub Pages and plain
+// shared hosting can all serve them without extra configuration.
+const ROOT = __dirname;
 const PORT = process.env.PORT || 5173;
 
 const TYPES = {

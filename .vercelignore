@@ -1,0 +1,9 @@
+# Kept in the repo, but never published to the web.
+# Without this the site root would serve these files to anyone who guessed
+# the URL - brochure-content.md in particular holds internal pricing notes.
+README.md
+brochure-content.md
+serve.js
+extracted/
+*.zip
+.claude/

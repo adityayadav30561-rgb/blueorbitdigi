@@ -1,7 +1,8 @@
 # Blue Orbit Digi — website
 
 The mockups in `Blue Orbit Digi UI mockups.zip` (design-canvas files that needed a
-React runtime) have been rebuilt as a plain static website in **`site/`**.
+React runtime) have been rebuilt as a plain static website. The pages sit at
+the root of this repo so any host can serve them without configuration.
 
 Plain HTML, CSS and JavaScript. No framework, no build step, no Node.js on the
 server — it runs on any normal web hosting (cPanel, Hostinger, GoDaddy, Netlify,
@@ -15,59 +16,72 @@ node serve.js
 
 Then open <http://localhost:5173>.
 
-You can also just double-click `site/index.html` — everything works from the file
+You can also just double-click `index.html` — everything works from the file
 system too, apart from the `.htaccess` rules.
 
 ## Files
 
 ```
-site/
-  index.html        Home
-  services.html     All nine services + full comparison tables
-  pricing.html      Every price on one page
-  seo.html          SEO service detail page
-  about.html        About / process / why clients stay
-  contact.html      Enquiry form + direct details
-  css/style.css     All styling (one commented file, 14 sections)
-  js/main.js        Sticky header, mobile menu, service filter, form
-  assets/logo.jpg   Brand logo
-  assets/icons/     Brand icons as local SVGs (no CDN needed)
-  images/           Put your photos here (currently empty)
-  robots.txt, sitemap.xml, .htaccess
-serve.js            Local preview server only — not needed on real hosting
+index.html          Home
+services.html       All nine services + full comparison tables
+pricing.html        Every price on one page
+seo.html            SEO service detail page
+about.html          About / process / why clients stay
+contact.html        Enquiry form + direct details
+css/style.css       All styling (one commented file, 22 sections)
+js/main.js          Header, menu, filters, tabs, form, motion
+assets/logo.jpg     Brand logo
+assets/icons/       Brand icons as local SVGs (no CDN needed)
+images/             Photographs used on the site
+robots.txt, sitemap.xml
+.htaccess           Apache hosts only (clean URLs, gzip, caching)
+vercel.json         Vercel only (clean URLs)
+.vercelignore       Keeps internal files out of the deployment
+
+Not part of the website:
+serve.js            Local preview server
+README.md           This file
+brochure-content.md Pricing reference for print work
+extracted/          The original design-canvas mockups
 ```
 
 ## Putting it online
 
-1. Upload **everything inside `site/`** to your hosting `public_html` folder
-   (not the `site` folder itself — `index.html` must sit at the top level).
-2. Point your domain at the host. That's it.
-3. Edit `sitemap.xml` and `robots.txt` if your domain is not `blueorbitdigi.co`.
+**Shared hosting (cPanel, Hostinger, GoDaddy):** upload everything except the
+"not part of the website" files above into `public_html`. `index.html` must sit
+at the top level. Then point your domain at the host.
 
-`.htaccess` is optional. It enables `/about` style URLs, gzip and caching on
-Apache hosts. Delete it if your host uses nginx.
+**Vercel / Netlify / GitHub Pages:** deploy the repo as-is. Because the pages
+are at the root there is nothing to configure — no root directory, no build
+command, no output directory.
 
-## Adding the real photos
+Edit `sitemap.xml` and `robots.txt` if your domain is not `blueorbitdigi.co`.
 
-Three spots currently show a grey placeholder box. Drop your image in
-`site/images/` and replace the placeholder `<span class="ph-label">…</span>`
-with an `<img>` tag — there is a comment above each one showing exactly what
-to write:
+Each host reads its own config file and ignores the others: `.htaccess` on
+Apache, `vercel.json` on Vercel. Both just enable `/about` style URLs in place
+of `/about.html`. Deleting either is harmless if you are not on that host.
 
-| Page | Spot | Suggested size |
+## Photographs
+
+Four photographs are in place, all from [Unsplash](https://unsplash.com) under
+the Unsplash Licence — free for commercial use, no attribution required, no
+watermark.
+
+| File | Where | Size |
 |---|---|---|
-| `index.html` | Hero photo | 570 × 600 |
-| `index.html` | Recent-work photo | 640 × 420 |
-| `about.html` | Team / studio photo | 640 × 440 |
-| `contact.html` | Map or office photo | 400 × 200 |
+| `images/hero.jpg` | Home hero | 1100 × 1200 |
+| `images/work.jpg` | Home, "why clients stay" | 1280 × 840 |
+| `images/team.jpg` | About, "what we actually do" | 1280 × 880 |
+| `images/office.jpg` | Contact side column | 800 × 440 |
 
-Example:
+These are stock photos of people who do not work here. That is normal practice,
+but real photographs of your own team and your own client work would do more
+for credibility than any stock image can. Swapping one is a straight
+replacement: keep the filename, then update the `width` and `height` on the
+matching `<img>` tag so the page does not shift while it loads.
 
-```html
-<div class="hero-photo photo">
-  <img src="images/hero.jpg" alt="The Blue Orbit Digi team at work">
-</div>
-```
+Every slot uses `object-fit: cover`, so the image is cropped to the frame
+rather than squashed — keep the subject near the centre.
 
 ## Making the contact form send mail
 
@@ -77,7 +91,7 @@ works everywhere but is not ideal.
 
 To make it send properly on normal PHP hosting:
 
-1. Create `site/send.php`:
+1. Create `send.php`:
 
    ```php
    <?php
@@ -131,7 +145,7 @@ values — headings are tracked slightly tight and that is tuned per typeface.
 Two kinds, both local — nothing is fetched from a CDN at runtime:
 
 - **Brand marks** (WordPress, Google, Visa, Facebook…) are SVG files in
-  `site/assets/icons/`, from [Simple Icons](https://simpleicons.org). Each one
+  `assets/icons/`, from [Simple Icons](https://simpleicons.org). Each one
   has a dark version and a `-white` version for use on coloured backgrounds.
 - **Interface icons** (check, arrow, mail, clock, target, wrench…) are inline
   `<svg>` written straight into the HTML, in the Lucide outline style. They are
@@ -171,7 +185,7 @@ tablets and one on phones.
 There is a comment marking them in the HTML. LinkedIn is not included —
 Simple Icons removed that logo after a trademark request, so there is no icon
 for it in the set. If you want LinkedIn in the footer, drop your own
-`linkedin.svg` into `site/assets/icons/` and copy one of the existing
+`linkedin.svg` into `assets/icons/` and copy one of the existing
 `<a>` blocks.
 
 The footer is repeated in all six pages (that is the trade-off for having no

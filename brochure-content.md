@@ -1,6 +1,6 @@
 # Brochure content — current pricing and details
 
-Everything below is taken from the live website (`site/`) as of 29 August 2026.
+Everything below is taken from the live website as of 29 August 2026.
 It is laid out to match the four-page structure of the existing Google Business
 Listing proposal (`seo.pdf`), so a new brochure can be built section for section.
 
