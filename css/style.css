@@ -1775,18 +1775,35 @@ table.plans .yes { color: var(--teal); }
   padding-top: 22px;
 }
 
+/* Takes a photo, a set of initials, or the neutral person icon - whichever
+   is inside it. Drop in <img src="images/client-1.jpg" alt=""> to use a real
+   photograph; it is cropped to the circle automatically. */
 .quote-avatar {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   flex: none;
+  overflow: hidden;
   border-radius: 50%;
   background: rgba(255, 255, 255, .85);
   border: 1px solid rgba(255, 255, 255, .95);
   font: 700 14px var(--font-head);
   letter-spacing: -.02em;
   color: var(--ink-70);
+}
+
+.quote-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quote-avatar .ic {
+  width: 22px;
+  height: 22px;
+  color: var(--ink-40);
+  stroke-width: 1.6;
 }
 
 .quote-by b { display: block; font: 600 15px var(--font-body); color: var(--ink); }

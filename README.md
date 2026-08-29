@@ -191,6 +191,44 @@ for it in the set. If you want LinkedIn in the footer, drop your own
 The footer is repeated in all six pages (that is the trade-off for having no
 build step), so a change to it has to be made in each file.
 
+## Testimonials
+
+Two sections, six cards: three on the home page (results-focused) and three on
+About (what working with you is like). Both are **placeholder content** — the
+quotes say "Example quote", the names say "Client name", and there is a comment
+block above each section in the HTML saying so.
+
+**Replace all six before launch.** Publishing invented testimonials as genuine
+breaches the Australian Consumer Law, and the ACCC enforces it. If you only
+have two real quotes, delete the spare cards — the grid reflows to fit
+whatever is left, and two real quotes beat six invented ones.
+
+The easiest source is your Google Business Profile: those reviews are already
+real, already attributed, and you can quote them directly.
+
+### Adding a photo
+
+Each card has an avatar circle that takes a photo, initials, or the neutral
+person icon that is in there now. To use a real photograph, put a square image
+in `images/` and replace the icon:
+
+```html
+<span class="quote-avatar">
+  <img src="images/client-1.jpg" alt="" width="96" height="96" loading="lazy" decoding="async">
+</span>
+```
+
+It is cropped to the circle automatically, so a square crop around 96 × 96
+works best. Initials also work if you have no photo:
+
+```html
+<span class="quote-avatar" aria-hidden="true">JM</span>
+```
+
+Only use a photograph of the person who actually gave the quote, with their
+permission. A stock photo of a stranger next to a client's name is the same
+problem as an invented quote.
+
 ## Motion
 
 All of it is in section 18 of `style.css` and sections 5–12 of `main.js`.
