@@ -8,10 +8,15 @@
 // Where enquiries are delivered.
 $TO = 'info@blueorbitdigi.com';
 
-// The address the mail is sent FROM. It must be on your own domain or the
-// host will refuse it and spam filters will bin it. Create this mailbox (or
-// an alias) in hPanel -> Emails.
-$FROM = 'website@blueorbitdigi.com';
+// The address the mail is sent FROM. It has to be a real address on your own
+// domain, or the host refuses it and spam filters bin it. Using the same
+// address for both works and needs no extra setup.
+//
+// If enquiries start landing in spam, the usual cause is that From and To are
+// identical - a pattern filters associate with spoofing. The fix is to create
+// website@blueorbitdigi.com in hPanel -> Emails (a plain alias is enough,
+// nothing needs to read it) and put it here instead.
+$FROM = 'info@blueorbitdigi.com';
 
 // Only accept a real form post.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
