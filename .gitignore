@@ -15,3 +15,7 @@ npm-debug.log*
 # Local env
 .env
 .env.local
+
+# Generated upload bundle
+dist/
+blueorbitdigi-upload.zip
