@@ -55,7 +55,7 @@ at the top level. Then point your domain at the host.
 are at the root there is nothing to configure — no root directory, no build
 command, no output directory.
 
-Edit `sitemap.xml` and `robots.txt` if your domain is not `blueorbitdigi.co`.
+Edit `sitemap.xml` and `robots.txt` if your domain is not `blueorbitdigi.com`.
 
 Each host reads its own config file and ignores the others: `.htaccess` on
 Apache, `vercel.json` on Vercel. Both just enable `/about` style URLs in place
@@ -83,43 +83,35 @@ matching `<img>` tag so the page does not shift while it loads.
 Every slot uses `object-fit: cover`, so the image is cropped to the frame
 rather than squashed — keep the subject near the centre.
 
-## Making the contact form send mail
+## The contact form
 
-Right now the form validates the input and then opens the visitor's email app
-with the enquiry pre-filled (`data-mode="mailto"` on the `<form>` tag). That
-works everywhere but is not ideal.
+`contact.html` posts to `send.php`, which emails the enquiry and redirects
+back to `/contact?sent=1`, where the page shows a confirmation.
 
-To make it send properly on normal PHP hosting:
+Both addresses are at the top of `send.php`:
 
-1. Create `send.php`:
+```php
+$TO   = 'info@blueorbitdigi.com';   // where enquiries land
+$FROM = 'info@blueorbitdigi.com';   // must be a real mailbox on the domain
+```
 
-   ```php
-   <?php
-   $name  = trim($_POST['name'] ?? '');
-   $email = trim($_POST['email'] ?? '');
-   $body  = "Name: $name\nEmail: $email\nPhone: " . ($_POST['phone'] ?? '') .
-            "\nBusiness: " . ($_POST['business'] ?? '') .
-            "\nNeeds: " . implode(', ', (array)($_POST['need'] ?? [])) .
-            "\nBudget: " . ($_POST['budget'] ?? '') .
-            "\n\n" . ($_POST['details'] ?? '');
+`Reply-To` is set to the enquirer, so hitting Reply in the inbox answers them
+rather than yourself.
 
-   mail('info@blueorbitdigi.com', "Website enquiry - $name", $body,
-        "From: website@blueorbitdigi.co\r\nReply-To: $email");
+**If enquiries start landing in spam**, the usual cause is that From and To are
+identical — a pattern filters associate with spoofing. Create
+`website@blueorbitdigi.com` in hPanel → Emails (a plain alias is enough) and
+put it in `$FROM`.
 
-   header('Location: contact.html?sent=1');
-   ```
+The handler rejects anything that is not a POST, re-validates the name and
+email server-side, strips carriage returns and newlines from every value used
+in a mail header (which is what stops a spammer injecting their own `Bcc:` and
+relaying through the form), and silently discards anything that fills the
+hidden `company_url` honeypot field.
 
-2. In `contact.html`, change the form tag to:
-
-   ```html
-   <form id="enquiry-form" action="send.php" method="post" novalidate>
-   ```
-
-   (drop `data-mode="mailto"` — the JavaScript then only validates and lets the
-   form submit normally).
-
-Form services like Formspree or Web3Forms work the same way: set their URL as
-the `action` and remove `data-mode="mailto"`.
+Requires PHP, so it works on Hostinger and any normal shared host. On a
+static-only host like Vercel or GitHub Pages it will not run — use Formspree or
+Web3Forms instead, by putting their URL in the form's `action`.
 
 ## Fonts
 
