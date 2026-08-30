@@ -20,7 +20,7 @@ $FROM = 'info@blueorbitdigi.com';
 
 // Only accept a real form post.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: contact.html');
+    header('Location: /contact');
     exit;
 }
 
@@ -38,7 +38,7 @@ function field($key) {
 // A hidden field no human ever sees. If it is filled in, it was a bot -
 // answer normally so the bot does not learn anything, but send nothing.
 if (field('company_url') !== '') {
-    header('Location: contact.html?sent=1');
+    header('Location: /contact?sent=1');
     exit;
 }
 
@@ -60,7 +60,7 @@ if (!empty($_POST['need']) && is_array($_POST['need'])) {
 // Same two rules the JavaScript enforces, re-checked here because anyone can
 // post straight to this file without going through the page.
 if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header('Location: contact.html?error=1');
+    header('Location: /contact?error=1');
     exit;
 }
 
@@ -89,5 +89,5 @@ $headers = implode("\r\n", [
 
 $sent = mail($TO, $subject, $body, $headers, '-f' . $FROM);
 
-header('Location: contact.html?' . ($sent ? 'sent=1' : 'error=1'));
+header('Location: /contact?' . ($sent ? 'sent=1' : 'error=1'));
 exit;

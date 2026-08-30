@@ -1,30 +1,76 @@
-# Optional Apache settings for shared hosting (cPanel, Hostinger, GoDaddy...).
-# Safe to delete if your host does not use Apache.
+# Apache settings for shared hosting (Hostinger, cPanel, GoDaddy...).
+# Ignored by hosts that do not run Apache.
 
-# Serve index.html for the site root
 DirectoryIndex index.html
 
-# Let visitors use /about instead of /about.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # ---- One URL per page ----------------------------------------------------
+  # Without this, /about and /about.html both serve the same page and search
+  # engines treat that as duplicate content. The extensionless form is the one
+  # we keep; anyone arriving on the .html version is sent to it permanently.
+
+  # /index.html -> /
+  RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+  RewriteRule ^ / [R=301,L]
+
+  # /about.html -> /about
+  RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+
+  # Serve /about from about.html on disk
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME}.html -f
   RewriteRule ^(.*)$ $1.html [L]
 </IfModule>
 
-# Compress text files
+# ---- Keep working files off the web ----------------------------------------
+# Deploying straight from the Git repository copies everything in it, notes
+# and all. These rules make sure nothing but the website is reachable, whether
+# it was uploaded or pulled.
+
+<FilesMatch "\.(md|json|ps1|sh|yml|yaml|log)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<FilesMatch "^(serve\.js|\.gitignore|\.vercelignore)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+RedirectMatch 404 ^/extracted/
+RedirectMatch 404 ^/dist/
+RedirectMatch 404 ^/\.git
+
+# ---- Compression -----------------------------------------------------------
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript image/svg+xml
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript image/svg+xml application/xml
 </IfModule>
 
-# Cache static assets for a year, keep HTML fresh
+# ---- Caching ---------------------------------------------------------------
+# A week, not a year: the CSS and JS filenames carry no version hash, so a
+# long cache would leave returning visitors on a stale stylesheet after an
+# update. HTML is never cached so content changes appear immediately.
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/css "access plus 1 year"
-  ExpiresByType text/javascript "access plus 1 year"
-  ExpiresByType image/svg+xml "access plus 1 year"
-  ExpiresByType image/jpeg "access plus 1 year"
-  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType text/javascript "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
   ExpiresByType text/html "access plus 0 seconds"
 </IfModule>
