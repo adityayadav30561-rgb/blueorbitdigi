@@ -1808,3 +1808,13 @@ table.plans .yes { color: var(--teal); }
 
 .quote-by b { display: block; font: 600 15px var(--font-body); color: var(--ink); }
 .quote-by span { display: block; margin-top: 2px; font-size: 13px; color: var(--ink-55); }
+
+/* Spam trap for the contact form. Off-screen rather than display:none,
+   because some bots skip hidden inputs but not positioned ones. */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

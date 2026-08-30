@@ -105,6 +105,16 @@
       msg.classList.toggle("is-error", !!isError);
     };
 
+    // send.php redirects back here with ?sent=1 or ?error=1
+    if (/[?&]sent=1/.test(window.location.search)) {
+      say("Thanks — your enquiry is on its way. We reply within one business day.", false);
+      form.reset();
+      history.replaceState(null, "", window.location.pathname);
+    } else if (/[?&]error=1/.test(window.location.search)) {
+      say("Sorry, that did not send. Please email info@blueorbitdigi.com directly.", true);
+      history.replaceState(null, "", window.location.pathname);
+    }
+
     form.addEventListener("submit", function (e) {
       var name = form.elements.name.value.trim();
       var email = form.elements.email.value.trim();
@@ -116,35 +126,8 @@
         return;
       }
 
-      // No mail script is wired up yet, so hand the enquiry to the visitor's
-      // email client. Delete this block once a server-side handler exists
-      // (see README.md - "Making the contact form send mail").
-      if (form.getAttribute("data-mode") === "mailto") {
-        e.preventDefault();
-
-        var get = function (selector) {
-          var checked = form.querySelectorAll(selector + ":checked");
-          var out = [];
-          for (var i = 0; i < checked.length; i++) { out.push(checked[i].value); }
-          return out.join(", ") || "-";
-        };
-
-        var body =
-          "Name: " + name + "\n" +
-          "Business: " + (form.elements.business.value.trim() || "-") + "\n" +
-          "Email: " + email + "\n" +
-          "Phone: " + (form.elements.phone.value.trim() || "-") + "\n" +
-          "Needs: " + get("input[name='need']") + "\n" +
-          "Budget: " + get("input[name='budget']") + "\n\n" +
-          (form.elements.details.value.trim() || "");
-
-        window.location.href =
-          "mailto:info@blueorbitdigi.com" +
-          "?subject=" + encodeURIComponent("Website enquiry - " + name) +
-          "&body=" + encodeURIComponent(body);
-
-        say("Your email app is opening with the enquiry ready to send.", false);
-      }
+      // Valid: let the browser post it to send.php, which mails the
+      // enquiry and redirects back here with ?sent=1 or ?error=1.
     });
   }
 

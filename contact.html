@@ -73,7 +73,14 @@
 
       <!-- Enquiry form -->
       <div class="card">
-        <form id="enquiry-form" data-mode="mailto" novalidate>
+        <form id="enquiry-form" action="send.php" method="post" novalidate>
+
+          <!-- Spam trap. Hidden from people and from screen readers; only a
+               bot fills it in, and send.php silently discards those. -->
+          <div class="hp" aria-hidden="true">
+            <label for="company_url">Company URL</label>
+            <input type="text" id="company_url" name="company_url" tabindex="-1" autocomplete="off">
+          </div>
 
           <div class="field-row">
             <label class="field">
