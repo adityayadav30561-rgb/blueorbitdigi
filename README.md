@@ -193,24 +193,27 @@ build step), so a change to it has to be made in each file.
 
 ## Testimonials
 
-Two sections, six cards: three on the home page (results-focused) and three on
-About (what working with you is like). Both are **placeholder content** — the
-quotes say "Example quote", the names say "Client name", and there is a comment
-block above each section in the HTML saying so.
+Five real client reviews, supplied by the client. Three sit on the home page
+(about the work delivered) and two on About (about what working with them is
+like). Each card shows the title the reviewer gave their own review, the
+five-star rating, and the review text unedited.
 
-**Replace all six before launch.** Publishing invented testimonials as genuine
-breaches the Australian Consumer Law, and the ACCC enforces it. If you only
-have two real quotes, delete the spare cards — the grid reflows to fit
-whatever is left, and two real quotes beat six invented ones.
+**No names are attached**, because none were supplied. Anonymous reviews are
+weaker than attributed ones, so it is worth going back and asking each client
+whether their name and business can be used.
 
-The easiest source is your Google Business Profile: those reviews are already
-real, already attributed, and you can quote them directly.
+### Adding a name later
 
-### Adding a photo
+Inside a `<figure class="card quote-card">`, after the `<blockquote>`:
 
-Each card has an avatar circle that takes a photo, initials, or the neutral
-person icon that is in there now. To use a real photograph, put a square image
-in `images/` and replace the icon:
+```html
+<figcaption class="quote-by">
+  <span class="quote-avatar" aria-hidden="true">JM</span>
+  <div><b>Jordan Miller</b></div>
+</figcaption>
+```
+
+The avatar circle takes initials, or an `<img>` for a photograph:
 
 ```html
 <span class="quote-avatar">
@@ -218,16 +221,9 @@ in `images/` and replace the icon:
 </span>
 ```
 
-It is cropped to the circle automatically, so a square crop around 96 × 96
-works best. Initials also work if you have no photo:
-
-```html
-<span class="quote-avatar" aria-hidden="true">JM</span>
-```
-
-Only use a photograph of the person who actually gave the quote, with their
-permission. A stock photo of a stranger next to a client's name is the same
-problem as an invented quote.
+Only attach a name or photograph the reviewer has agreed to. Inventing either,
+or borrowing a stock photo of a stranger, turns a real review into a fake
+testimonial - which is illegal in Australia, the US and Canada.
 
 ## Motion
 

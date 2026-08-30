@@ -1818,3 +1818,14 @@ table.plans .yes { color: var(--teal); }
   height: 1px;
   overflow: hidden;
 }
+
+/* Review headline. These are the titles the clients gave their own reviews,
+   so they carry real information rather than being a label we invented. */
+.quote-title {
+  font: 700 17px var(--font-head);
+  letter-spacing: -.022em;
+  line-height: 1.32;
+  color: var(--ink);
+  margin: 0 0 11px;
+}
+.quote-card blockquote { margin-top: 0; }
